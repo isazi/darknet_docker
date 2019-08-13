@@ -33,4 +33,7 @@ WORKDIR /opt/darknet
 RUN make -e -j
 RUN cp libdarknet.so /usr/local/lib && ldconfig
 RUN cp darknet /usr/local/bin
+ENV PYTHONPATH="/opt/darknet:${PYTHONPATH}"
+
+# Final state
 WORKDIR /
