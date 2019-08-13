@@ -1,6 +1,7 @@
-# Nvidia CUDA based Docker image
+# Darknet container
 
-* ubuntu v18.04
-* cuda v10.01
-* python v3.6.8
-* opencv v3.4.6
+* Ubuntu 18.04
+* CUDA 10.1
+* CUDNN 7
+* Python 3
+* OpenCV 3.2.0
