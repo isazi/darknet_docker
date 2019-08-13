@@ -1,82 +1,28 @@
 #
-# Nvidia CUDA Python3 OpenCV
+# Darknet
 #
 
+# Ubuntu 18.04 + CUDA 10.1
 FROM nvidia/cuda:10.1-devel-ubuntu18.04
+ARG DEBIAN_FRONTEND=noninteractive
 
-# working directory
+# Install base system
 WORKDIR /
-
-# install
-RUN \
-	apt-get update && apt-get install -y \
-	autoconf \
-        automake \
-	libtool \
+RUN apt-get -qq -y update && apt-get -qq -y dist-upgrade
+RUN apt-get -qq -y update && apt-get -qq -y install \
 	build-essential \
-    cmake \
-    yasm \
-    pkg-config \
-    libavcodec-dev \
-    libxvidcore-dev \
-    libx264-dev \
-    gfortran \
-    python3-dev \
-    libatlas-base-dev \
-    libdc1394-22-dev \
-    libgtk-3-dev \
-    libswscale-dev \
-    libtbb2 \
-    libtbb-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libtiff-dev \
-    libavformat-dev \
-    libpq-dev \
 	git \
-    nano \
-    vim \
-    curl \
-    unzip \
-    ninja-build \
-    gcc \
-    libv4l-dev \
-    ffmpeg \
-    libtiff-dev \
-    libwebp-dev \
-    python3-pip \
-    wget && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+    libopencv-dev \
+    libcudnn7-dev \
+    && apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
-WORKDIR /
-RUN pip3 install virtualenv virtualenvwrapper jasper numpy python-osc
-
-WORKDIR /
-ENV OPENCV_VERSION="3.4.6"
-RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip \
-&& wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip \
-&& unzip opencv.zip \
-&& unzip opencv_contrib.zip \
-&& rm opencv.zip \
-&& rm opencv_contrib.zip \
-&& mv /opencv-${OPENCV_VERSION} /opencv \
-&& mv /opencv_contrib-${OPENCV_VERSION} /opencv_contrib \
-&& mkdir /opencv/build \
-&& cd /opencv/build
-
-WORKDIR /opencv/build
-
-RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
- -D CMAKE_INSTALL_PREFIX=/usr/local \
- -D INSTALL_PYTHON_EXAMPLES=ON \
- -D INSTALL_C_EXAMPLES=OFF \
- -D OPENCV_ENABLE_NONFREE=ON \
- -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules \
- -D PYTHON_EXECUTABLE=~/.virtualenvs/cv/bin/python \
- -D BUILD_EXAMPLES=ON ..
-
-# RUN make -j${nproc}
-# RUN make install
-# RUN ldconfig 
-
-WORKDIR /
-RUN mkdir /work
+# Install Darknet with CUDA, CUDNN and OpenCV
+WORKDIR /opt
+ENV GPU=1
+ENV CUDNN=1
+ENV OPENCV=1
+ENV OPENMP=1
+RUN git clone https://github.com/pjreddie/darknet.git
+WORKDIR /opt/darknet
+RUN make -e -j
