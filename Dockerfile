@@ -19,6 +19,7 @@ RUN apt-get -qq -y update && apt-get -qq -y install \
     libcudnn7-dev \
     && apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
+ENV LD_LIBRARY_PATH="/usr/local/cuda-10.1/compat:${LD_LIBRARY_PATH}"
 
 # Install Darknet with CUDA, CUDNN and OpenCV
 WORKDIR /opt
@@ -30,3 +31,6 @@ ENV LIBSO=1
 RUN git clone https://github.com/AlexeyAB/darknet.git
 WORKDIR /opt/darknet
 RUN make -e -j
+RUN cp libdarknet.so /usr/local/lib && ldconfig
+RUN cp darknet /usr/local/bin
+WORKDIR /
