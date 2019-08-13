@@ -12,6 +12,9 @@ RUN apt-get -qq -y update && apt-get -qq -y dist-upgrade
 RUN apt-get -qq -y update && apt-get -qq -y install \
 	build-essential \
 	git \
+    python3 \
+    python3-opencv \
+    python3-pip \
     libopencv-dev \
     libcudnn7-dev \
     && apt-get clean
