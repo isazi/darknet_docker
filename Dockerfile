@@ -26,6 +26,7 @@ ENV GPU=1
 ENV CUDNN=1
 ENV OPENCV=1
 ENV OPENMP=1
-RUN git clone https://github.com/pjreddie/darknet.git
+ENV LIBSO=1
+RUN git clone https://github.com/AlexeyAB/darknet.git
 WORKDIR /opt/darknet
 RUN make -e -j
