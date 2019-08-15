@@ -1,0 +1,4 @@
+122c122
+<     lib = CDLL("./libdarknet.so", RTLD_GLOBAL)
+---
+>     lib = CDLL("libdarknet.so", RTLD_GLOBAL)
