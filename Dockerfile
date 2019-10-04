@@ -62,6 +62,8 @@ ENV OPENMP=1
 ENV LIBSO=1
 RUN git clone https://github.com/AlexeyAB/darknet.git
 WORKDIR /opt/darknet
+COPY patches/Makefile.patch /opt/darknet
+RUN patch Makefile Makefile.patch
 RUN make -e -j
 RUN cp libdarknet.so /usr/local/lib && ldconfig
 RUN cp darknet /usr/local/bin
