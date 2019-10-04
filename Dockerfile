@@ -53,7 +53,7 @@ RUN make -j 2
 RUN make install
 RUN rm -rf /opt/opencv_contrib-3.4.7 && rm -rf /opt/opencv-3.4.7
 
-# # Install Darknet with CUDA, CUDNN and OpenCV
+# Install Darknet with CUDA, CUDNN and OpenCV
 WORKDIR /opt
 ENV GPU=1
 ENV CUDNN=1
