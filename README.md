@@ -4,4 +4,4 @@
 * CUDA 10.1
 * CUDNN 7
 * Python 3
-* OpenCV 3.4.7
+* OpenCV 3.2
