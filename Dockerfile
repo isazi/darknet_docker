@@ -19,49 +19,18 @@ RUN apt-get -qq -y update && apt-get -qq -y install \
     libtbb2 \
     libtbb-dev \
     libcudnn7-dev \
-    libeigen3-dev \
-    libgtk2.0-dev \
-    pkg-config \
-    libavcodec-dev \
-    libavformat-dev \
-    libswscale-dev \
-    libavresample-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libtiff-dev \
-    libdc1394-22-dev \
-    libv4l-dev \
-    ffmpeg \
-    libgstreamer1.0-dev \
-    libgstreamer-plugins-base1.0-dev \
     wget \
     libopencv-dev \
-     libgstreamer-opencv1.0-0 \
+    python3-opencv \
     && apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 ENV LD_LIBRARY_PATH="/usr/local/cuda/compat:${LD_LIBRARY_PATH}"
-
-# # Install OpenCV with CUDA
-# WORKDIR /opt
-# RUN wget -q -O opencv.tar.gz https://github.com/opencv/opencv/archive/3.4.7.tar.gz
-# RUN tar xzvf opencv.tar.gz && rm opencv.tar.gz
-# RUN wget -q -O opencv_contrib.tar.gz https://github.com/opencv/opencv_contrib/archive/3.4.7.tar.gz
-# RUN tar xzvf opencv_contrib.tar.gz && rm opencv_contrib.tar.gz
-# WORKDIR /opt/opencv-3.4.7/build
-# RUN cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_CUDA=ON -D INSTALL_C_EXAMPLES=OFF \
-#     -D ENABLE_FAST_MATH=1 -D CUDA_FAST_MATH=1 -D WITH_CUBLAS=1 -D WITH_FFMPEG=ON -D WITH_GSTREAMER=ON -D ENABLE_PRECOMPILED_HEADERS=OFF \
-#     -D CUDA_ARCH_BIN="5.0 5.2 6.0 6.1 7.0 7.5" \
-#     -D INSTALL_PYTHON_EXAMPLES=OFF -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-3.4.7/modules -D BUILD_EXAMPLES=OFF ..
-# RUN make -j 4
-# RUN make install
-# RUN rm -rf /opt/opencv_contrib-3.4.7 && rm -rf /opt/opencv-3.4.7
 
 # Install Darknet with CUDA, CUDNN and OpenCV
 WORKDIR /opt
 ENV GPU=1
 ENV CUDNN=1
 ENV OPENCV=1
-ENV OPENMP=1
 ENV LIBSO=1
 RUN git clone https://github.com/AlexeyAB/darknet.git
 WORKDIR /opt/darknet
